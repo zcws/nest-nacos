@@ -1,9 +1,9 @@
 {
   "name": "nest-nacos",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "基于NestJs框架，用于注册nacos服务模块",
   "author": "hehu <hehutiger@dingtalk.com>",
-  "homepage": "",
+  "homepage": "https://github.com/Steppenwolf1900/nest-nacos",
   "main": "dist/index.js",
   "license": "ISC",
   "directories": {
@@ -13,7 +13,6 @@
     "type": "git",
     "url": "https://github.com/Steppenwolf1900/nest-nacos.git"
   },
-  "homepage": "https://github.com/Steppenwolf1900/nest-nacos",
   "scripts": {
     "build": "tsc -b",
     "lint": "eslint",
