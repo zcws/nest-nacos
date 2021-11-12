@@ -1,26 +1,16 @@
-import { Injectable, OnModuleDestroy, OnModuleInit } from "@nestjs/common";
+import { Inject, Injectable, OnModuleDestroy, OnModuleInit } from "@nestjs/common";
 import * as Nacos from "nacos";
 import { getLogger } from "log4js";
 import { networkInterfaces } from "os";
-import { ConfigService } from "@nestjs/config";
-
+import { IConfig } from "./nacos.module";
 const { NacosNamingClient } = Nacos as any;
-
-interface Conf {
-  port?: number;
-  enable?: boolean;
-  namespace: string;
-  serverList: string;
-}
 
 @Injectable()
 export class NacosService implements OnModuleInit, OnModuleDestroy {
   private client: typeof NacosNamingClient;
   private enable = true;
   private readonly logger = getLogger("Nacos");
-  private config: Conf;
-  constructor(private readonly configService: ConfigService) {
-    this.config = configService.get("NACOS") as Conf;
+  constructor(@Inject("Config") private readonly config: IConfig) {
     if (!this.config) {
       throw Error("NACOS config info must not be null!");
     }
