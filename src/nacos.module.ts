@@ -1,7 +1,5 @@
-import { DynamicModule, Module } from "@nestjs/common";
+import { DynamicModule, FactoryProvider, Module } from "@nestjs/common";
 import { NacosService } from "./nacos.service";
-import { Type } from "@nestjs/common/interfaces/type.interface";
-import { Abstract } from "@nestjs/common/interfaces/abstract.interface";
 
 export interface IConfig {
   port: number;
@@ -10,11 +8,8 @@ export interface IConfig {
   serverList: string;
 }
 
-interface IProvider {
-  useFactory: (...args: any[]) => IConfig;
-  inject: Array<Type<any> | string | symbol | Abstract<any> | Function>;
-}
-
+type Type = Omit<FactoryProvider<IConfig>, 'provide'>;
+interface IProvider extends Type {}
 
 @Module({})
 export class NacosModule {
