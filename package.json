@@ -1,6 +1,6 @@
 {
   "name": "nest-nacos",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "基于NestJs框架，用于注册nacos服务模块",
   "author": "hehu <hehutiger@dingtalk.com>",
   "homepage": "https://github.com/Steppenwolf1900/nest-nacos",
