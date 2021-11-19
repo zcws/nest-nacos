@@ -6,7 +6,7 @@
 
 ```
 import { Module, OnModuleInit } from "@nestjs/common";
-import { NacosService, NacosModule } from "@hehu/nacos";
+import { NacosService, NacosModule } from "nest-nacos";
 
 @Module({
   imports: [

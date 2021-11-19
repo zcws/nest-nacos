@@ -1,9 +1,13 @@
 {
   "name": "nest-nacos",
   "version": "0.0.6",
-  "description": "基于NestJs框架，用于注册nacos服务模块",
+  "keywords": [
+    "nestjs",
+    "nacos"
+  ],
+  "description": "基于NestJs nacos服务模块",
   "author": "hehu <hehutiger@dingtalk.com>",
-  "homepage": "https://github.com/Steppenwolf1900/nest-nacos",
+  "homepage": "https://github.com/zcws/nest-nacos",
   "main": "lib/index.js",
   "license": "ISC",
   "files": [
@@ -13,7 +17,7 @@
   "types": "types",
   "repository": {
     "type": "git",
-    "url": "https://github.com/Steppenwolf1900/nest-nacos.git"
+    "url": "https://github.com/zcws/nest-nacos.git"
   },
   "scripts": {
     "build": "rimraf lib types & tsc -b",
