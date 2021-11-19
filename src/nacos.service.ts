@@ -3,21 +3,22 @@ import * as Nacos from "nacos";
 import { getLogger } from "log4js";
 import { networkInterfaces } from "os";
 import { IConfig } from "./nacos.module";
+
+// eslint-disable-next-line
 const { NacosNamingClient } = Nacos as any;
 
 @Injectable()
 export class NacosService implements OnModuleInit, OnModuleDestroy {
   private client: typeof NacosNamingClient;
-  private enable = true;
+  private enable: boolean;
   private readonly logger = getLogger("Nacos");
+
   constructor(@Inject("Config") private readonly config: IConfig) {
     if (!this.config) {
       throw Error("NACOS config info must not be null!");
     }
 
-    if (this.config.hasOwnProperty("enable")) {
-      this.enable = this.config.enable as boolean;
-    }
+    this.enable = this.config.enable ?? true;
 
     if (this.enable) {
       if (!this.config.namespace) {
@@ -75,7 +76,7 @@ export class NacosService implements OnModuleInit, OnModuleDestroy {
 
     if (!options.ip) {
       const networks = networkInterfaces();
-      const address = Object.values(networks).flat().filter((x: any) => x.family === "IPv4" && !x.internal).map((x: any) => x.address);
+      const address = Object.values(networks).flat().filter(x => x?.family === "IPv4" && !x.internal).map(x => x?.address);
       options.ip = address[0];
     }
 

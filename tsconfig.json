@@ -2,17 +2,17 @@
   "compilerOptions": {
     "module": "CommonJS",
     "declaration": true,
+    "declarationDir": "./types",
     "removeComments": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "allowSyntheticDefaultImports": true,
     "target": "ES2020",
-    "outDir": "./dist",
+    "outDir": "./lib",
     "baseUrl": "./src",
     "incremental": true,
     "strict": true,
     "noImplicitAny": false,
-    "inlineSourceMap": true,
-    "strictPropertyInitialization": false
+    "inlineSourceMap": true
   }
 }

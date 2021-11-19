@@ -4,19 +4,22 @@
   "description": "基于NestJs框架，用于注册nacos服务模块",
   "author": "hehu <hehutiger@dingtalk.com>",
   "homepage": "https://github.com/Steppenwolf1900/nest-nacos",
-  "main": "dist/index.js",
+  "main": "lib/index.js",
   "license": "ISC",
-  "directories": {
-    "lib": "src"
-  },
+  "files": [
+    "lib",
+    "types"
+  ],
+  "types": "types",
   "repository": {
     "type": "git",
     "url": "https://github.com/Steppenwolf1900/nest-nacos.git"
   },
   "scripts": {
-    "build": "tsc -b",
-    "lint": "eslint",
-    "sv": "standard-version -r"
+    "build": "rimraf lib types & tsc -b",
+    "lint": "eslint . --ext .ts",
+    "sv": "standard-version -r",
+    "prepublish": "yarn lint & yarn build"
   },
   "dependencies": {
     "@nestjs/common": "^8.2.0",
@@ -30,7 +33,10 @@
   },
   "peerDependencies": {},
   "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.4.0",
+    "@typescript-eslint/parser": "^5.4.0",
     "eslint": "^8.2.0",
+    "rimraf": "^3.0.2",
     "typescript": "^4.3.5"
   },
   "standard-version": {
