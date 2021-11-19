@@ -8,8 +8,7 @@ export interface IConfig {
   serverList: string;
 }
 
-type Type = Omit<FactoryProvider<IConfig>, 'provide'>;
-interface IProvider extends Type {}
+type IProvider = Omit<FactoryProvider<IConfig>, 'provide'>;
 
 @Module({})
 export class NacosModule {
