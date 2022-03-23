@@ -9,10 +9,12 @@
     "allowSyntheticDefaultImports": true,
     "target": "ES2020",
     "outDir": "./lib",
-    "baseUrl": "./src",
-    "incremental": true,
+    "baseUrl": ".",
     "strict": true,
     "noImplicitAny": false,
     "inlineSourceMap": true
-  }
+  },
+  "exclude": [
+    "test"
+  ]
 }

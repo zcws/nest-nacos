@@ -1,2 +1,3 @@
-export * from "./nacos.module"
-export * from "./nacos.service"
+export * from "./naming/naming.module";
+export * from "./naming/naming.service";
+export * from "./constant";
