@@ -6,3 +6,5 @@ dist
 yarn.lock
 lib
 types
+.env
+**/*.js

@@ -6,27 +6,19 @@
 
 ```
 import { Module, OnModuleInit } from "@nestjs/common";
-import { NacosService, NacosModule } from "nest-nacos";
-import { ConfigModule, ConfigService } from "@nestjs/config";
+import { NamingService, NacosModule } from "nest-nacos";
 
 @Module({
   imports: [
-   ConfigModule.forRoot({
-      isGlobal: true
-    }),
     // 可注入获取nacos配置的服务
     NacosModule.forRoot({
-      inject: [ConfigService],
-      useFactory: (configService: ConfigService) => {
-        return configService.get("NACOS");
-      }
+      group: process.env.group,
+      dataId: process.env.dataId,
+      server: process.env.server,
+      accessKey: process.env.accessKey,
+      secretKey: process.env.secretKey,
+      namespace: process.env.namespace
     })
-    // 或者直接传入nacos的相关配置
-    // NacosModule.forRoot({
-    //   port: 8000,
-    //   namespace: "namespace",
-    //   serverList: "serverList"
-    // })
   ]
 })
 
@@ -37,8 +29,6 @@ export class AppModule implements OnModuleInit {
   async onModuleInit(): Promise<void> {
     // 注册服务名
     await this.nacos.register("service-name");
-    // 同时支持传入IP，端口
-    // await this.nacos.register("service-name", { ip: "127.0.0.1", port: 8000 });
   }
 }
 ```

@@ -1,13 +1,14 @@
 {
   "compilerOptions": {
     "module": "CommonJS",
+    "moduleResolution": "node",
     "declaration": true,
     "declarationDir": "./types",
     "removeComments": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "allowSyntheticDefaultImports": true,
-    "target": "ES2020",
+    "target": "ES2022",
     "outDir": "./lib",
     "baseUrl": ".",
     "strict": true,
@@ -16,5 +17,8 @@
   },
   "exclude": [
     "test"
-  ]
+  ],
+  "ts-node": {
+    "files": true
+  }
 }
