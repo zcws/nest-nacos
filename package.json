@@ -1,6 +1,6 @@
 {
   "name": "nest-nacos",
-  "version": "0.0.6",
+  "version": "0.1.0",
   "keywords": [
     "nestjs",
     "nacos"

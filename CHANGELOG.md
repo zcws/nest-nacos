@@ -1,4 +1,17 @@
 # Changelog
+## [0.1.0](https://github.com/zcws/nest-nacos/compare/v0.0.6...v0.1.0) (2022-05-05)
+
+
+### Features
+
+* 增加配置中心。 ([2ddde9f](https://github.com/zcws/nest-nacos/commit/2ddde9fbf219aa75e769e78e9d4e2e3d8e577745))
+* 支持配置中心。 ([50cd54c](https://github.com/zcws/nest-nacos/commit/50cd54c5005aa88578ba9752464469b44ae2f8d1))
+
+
+### Other
+
+* 修改readme ([6121d66](https://github.com/zcws/nest-nacos/commit/6121d66fe739bf612f08468c569e96d0ca8f8fbd))
+
 ### [0.0.6](https://github.com/Steppenwolf1900/nest-nacos/compare/v0.0.5...v0.0.6) (2021-11-15)
 
 
