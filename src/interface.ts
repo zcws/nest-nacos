@@ -6,4 +6,5 @@ export interface IConfig {
   accessKey?: string;
   secretKey?: string;
   subscribe?: boolean;
+  logger?: typeof console;
 }

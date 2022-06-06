@@ -1,4 +1,5 @@
 {
+  "private": true,
   "name": "nest-nacos",
   "version": "0.2.0",
   "keywords": [
@@ -27,7 +28,7 @@
   },
   "dependencies": {
     "debug": "^4.3.4",
-    "nacos": "^2.2.1",
+    "nacos": "^2.4.1",
     "os": "^0.1.2",
     "yaml": "^2.0.1"
   },

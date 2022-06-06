@@ -1,23 +1,20 @@
-import { NacosConfigClient } from "nacos";
+import { NacosConfigClient, NacosNamingClient } from "nacos";
+import { Injectable, OnModuleDestroy } from "@nestjs/common";
 import * as Debug from "debug";
 import { parse } from "yaml";
 import { EventEmitter } from "events";
-import { Injectable, OnModuleDestroy } from "@nestjs/common";
 import { IConfig } from "./interface";
-import * as Nacos from "nacos";
 import { networkInterfaces } from "os";
 import * as assert from "assert";
 
-// eslint-disable-next-line
-const { NacosNamingClient } = Nacos as any;
 
 @Injectable()
 export class NacosService extends EventEmitter implements OnModuleDestroy {
   #config;
+  #namingClient;
   #isReady = false;
   debug = Debug("nacos");
   #configClient: NacosConfigClient;
-  #namingClient: typeof NacosNamingClient;
 
   constructor(private readonly conf: IConfig) {
     super();
@@ -88,14 +85,15 @@ export class NacosService extends EventEmitter implements OnModuleDestroy {
     this.debug("加载配置", content);
   }
 
-  private async getNamingClient(): Promise<typeof NacosNamingClient> {
+  private async getNamingClient(): Promise<NacosNamingClient> {
     if (this.#namingClient) {
       return this.#namingClient;
     }
 
     this.#namingClient = new NacosNamingClient({
       serverList: this.conf.server,
-      namespace: this.conf.namespace
+      namespace: this.conf.namespace,
+      logger: this.conf.logger || console
     });
 
     await this.#namingClient.ready();
