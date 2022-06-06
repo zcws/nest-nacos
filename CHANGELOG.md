@@ -1,4 +1,11 @@
 # Changelog
+## [0.2.0](https://github.com/zcws/nest-nacos/compare/v0.1.2...v0.2.0) (2022-06-06)
+
+
+### Features
+
+* 增加config订阅选项，默认不订阅。 ([703aeee](https://github.com/zcws/nest-nacos/commit/703aeee9006d041cc23c659e4e608f5b4f9130fe))
+
 ### [0.1.2](https://github.com/zcws/nest-nacos/compare/v0.1.1...v0.1.2) (2022-05-06)
 
 ### [0.1.1](https://github.com/zcws/nest-nacos/compare/v0.1.0...v0.1.1) (2022-05-05)
