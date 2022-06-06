@@ -5,4 +5,5 @@ export interface IConfig {
   dataId?: string;
   accessKey?: string;
   secretKey?: string;
+  subscribe?: boolean;
 }

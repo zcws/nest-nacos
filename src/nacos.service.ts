@@ -75,7 +75,10 @@ export class NacosService extends EventEmitter implements OnModuleDestroy {
     const { dataId, group = "DEFAULT_GROUP" } = this.conf;
     const content = await this.#configClient.getConfig(dataId, group);
     this.setConfig(content);
-    this.#configClient.subscribe({ dataId, group }, content => this.setConfig(content));
+    if (this.conf.subscribe) {
+      this.#configClient.subscribe({ dataId, group }, content => this.setConfig(content));
+    }
+
     this.#isReady = true;
     this.emit("ready");
   }
