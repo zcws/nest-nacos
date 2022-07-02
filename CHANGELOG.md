@@ -1,4 +1,11 @@
 # Changelog
+### [0.2.2](https://github.com/zcws/nest-nacos/compare/v0.2.0...v0.2.2) (2022-07-02)
+
+
+### Performance
+
+* setMaxListeners 0 ([f0f3699](https://github.com/zcws/nest-nacos/commit/f0f36994ef2ea2399b8c904ecc6b0d9cb36a697a))
+
 ### [0.2.1](https://github.com/zcws/nest-nacos/compare/v0.2.0...v0.2.1) (2022-06-06)
 
 ## [0.2.0](https://github.com/zcws/nest-nacos/compare/v0.1.2...v0.2.0) (2022-06-06)
