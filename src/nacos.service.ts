@@ -7,7 +7,6 @@ import { IConfig } from "./interface";
 import { networkInterfaces } from "os";
 import * as assert from "assert";
 
-
 @Injectable()
 export class NacosService extends EventEmitter implements OnModuleDestroy {
   #config;
@@ -25,6 +24,8 @@ export class NacosService extends EventEmitter implements OnModuleDestroy {
     assert.ok(this.conf.secretKey, "secretKey must not be null!");
     assert.ok(this.conf.dataId, "dataId must not be null!");
     assert.ok(this.conf.group, "group must not be null!");
+
+    this.setMaxListeners(0);
 
     this.#configClient = new NacosConfigClient({
       serverAddr: this.conf.server,
