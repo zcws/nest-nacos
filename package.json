@@ -32,13 +32,13 @@
     "yaml": "^2.0.1"
   },
   "peerDependencies": {
-    "@nestjs/common": "^8.4.2",
+    "@nestjs/common": "^9.0.8",
     "reflect-metadata": "^0.1.13"
   },
   "devDependencies": {
-    "@nestjs/common": "^8.4.2",
-    "@nestjs/core": "^8.4.2",
-    "@nestjs/testing": "^8.4.2",
+    "@nestjs/common": "^9.0.8",
+    "@nestjs/core": "^9.0.8",
+    "@nestjs/testing": "^9.0.8",
     "@types/chai": "^4.3.0",
     "@types/debug": "^4.1.7",
     "@types/mocha": "^9.1.0",
