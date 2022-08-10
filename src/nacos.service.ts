@@ -1,9 +1,8 @@
 import { NacosConfigClient, NacosNamingClient } from "nacos";
-import { Injectable, OnModuleDestroy } from "@nestjs/common";
-import * as Debug from "debug";
+import { Injectable, OnModuleDestroy, Logger } from "@nestjs/common";
 import { parse } from "yaml";
 import { EventEmitter } from "events";
-import { IConfig } from "./interface";
+import { IOptions } from "./interface";
 import { networkInterfaces } from "os";
 import * as assert from "assert";
 
@@ -12,29 +11,31 @@ export class NacosService extends EventEmitter implements OnModuleDestroy {
   #config;
   #namingClient;
   #isReady = false;
-  debug = Debug("nacos");
+  logger = new Logger("Nacos");
   #configClient: NacosConfigClient;
 
-  constructor(private readonly conf: IConfig) {
+  constructor(private readonly opt: IOptions) {
     super();
 
-    assert.ok(this.conf.server, "server must not be null!");
-    assert.ok(this.conf.namespace, "namespace must not be null!");
-    assert.ok(this.conf.accessKey, "accessKey must not be null!");
-    assert.ok(this.conf.secretKey, "secretKey must not be null!");
-    assert.ok(this.conf.dataId, "dataId must not be null!");
-    assert.ok(this.conf.group, "group must not be null!");
+    assert.ok(this.opt.server, "server must not be null!");
+    assert.ok(this.opt.namespace, "namespace must not be null!");
+    assert.ok(this.opt.accessKey, "accessKey must not be null!");
+    assert.ok(this.opt.secretKey, "secretKey must not be null!");
 
     this.setMaxListeners(0);
 
     this.#configClient = new NacosConfigClient({
-      serverAddr: this.conf.server,
-      namespace: this.conf.namespace,
-      accessKey: this.conf.accessKey,
-      secretKey: this.conf.secretKey
+      serverAddr: this.opt.server,
+      namespace: this.opt.namespace,
+      accessKey: this.opt.accessKey,
+      secretKey: this.opt.secretKey
     });
-    // 加载配置文件
-    this.loadConfig().catch(err => this.debug(err));
+
+    if (this.opt.config) {
+      // 加载配置文件
+      this.loadAllConfig()
+        .catch((err: Error) => this.logger.error(err.message, err.stack));
+    }
   }
 
   async getConfig<T>(key?: string): Promise<T> {
@@ -69,11 +70,18 @@ export class NacosService extends EventEmitter implements OnModuleDestroy {
   /**
    * 加载配置文件
    * */
-  private async loadConfig() {
-    const { dataId, group = "DEFAULT_GROUP" } = this.conf;
-    const content = await this.#configClient.getConfig(dataId, group);
-    this.setConfig(content);
-    if (this.conf.subscribe) {
+  private async loadAllConfig() {
+    if (!this.opt.config) {
+      assert.ok(this.opt.config, "config must not be null!");
+    }
+
+    const { dataId, group, commons = [] } = this.opt.config;
+    await this.loadConfig(dataId, group);
+    for (const c of commons) {
+      await this.loadConfig(c.dataId, c.group);
+    }
+
+    if (this.opt.config.subscribe) {
       this.#configClient.subscribe({ dataId, group }, content => this.setConfig(content));
     }
 
@@ -81,9 +89,15 @@ export class NacosService extends EventEmitter implements OnModuleDestroy {
     this.emit("ready");
   }
 
-  private setConfig(content: string) {
-    this.#config = parse(content);
-    this.debug("加载配置", content);
+  private async loadConfig(dataId: string, group = "DEFAULT_GROUP"): Promise<void> {
+    const content = await this.#configClient.getConfig(dataId, group);
+    assert.ok(content, `config must not be null!dataId:${dataId},group:${group}`);
+    this.setConfig(content);
+  }
+
+  private setConfig(content): void {
+    this.#config = Object.assign(this.#config || {}, parse(content));
+    this.logger.debug(`加载配置:${content}`);
   }
 
   private async getNamingClient(): Promise<NacosNamingClient> {
@@ -92,19 +106,19 @@ export class NacosService extends EventEmitter implements OnModuleDestroy {
     }
 
     this.#namingClient = new NacosNamingClient({
-      serverList: this.conf.server,
-      namespace: this.conf.namespace,
-      logger: this.conf.logger || console
+      serverList: this.opt.server,
+      namespace: this.opt.namespace,
+      logger: this.opt.logger || console
     });
 
     await this.#namingClient.ready();
-    this.debug("ready");
+    this.logger.debug("ready");
     return this.#namingClient;
   }
 
   async onModuleDestroy(): Promise<void> {
     await this.#namingClient?.close();
-    this.debug("closed");
+    this.logger.debug("closed");
   }
 
 
@@ -130,7 +144,7 @@ export class NacosService extends EventEmitter implements OnModuleDestroy {
       ip,
       port: await this.getConfig("port")
     });
-    this.debug("register");
+    this.logger.debug("register");
 
     return true;
   }

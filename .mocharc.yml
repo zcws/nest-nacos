@@ -6,7 +6,5 @@ timeout: 0
 recursive: true
 require:
   - ts-node/register
-  - dotenv/config
-  - source-map-support/register
 extension:
   - ts

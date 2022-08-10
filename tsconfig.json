@@ -19,6 +19,10 @@
     "test"
   ],
   "ts-node": {
-    "files": true
+    "files": true,
+    "require": [
+      "dotenv/config",
+      "source-map-support/register"
+    ]
   }
 }

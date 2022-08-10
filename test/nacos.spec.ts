@@ -1,14 +1,31 @@
 import { assert } from "chai";
-import config from "./config";
+import { env } from "process";
 import { Test } from "@nestjs/testing";
-import { IConfig } from "../src/interface";
 import { NacosModule, NacosService } from "../src";
 
 describe("NacosModule", () => {
   let svc: NacosService;
   before(async () => {
     const module = await Test.createTestingModule({
-      imports: [NacosModule.forRoot(config as IConfig)]
+      imports: [
+        NacosModule.forRoot({
+          server: env.server as string,
+          accessKey: env.accessKey,
+          secretKey: env.secretKey,
+          namespace: env.namespace as string,
+          config: {
+            subscribe: true,
+            group: env.group as string,
+            dataId: env.dataId as string,
+            commons: [
+              {
+                group: env["shared.group"] as string,
+                dataId: env["shared.dataId"] as string
+              }
+            ]
+          }
+        })
+      ]
     }).compile();
     svc = module.get<NacosService>(NacosService);
   });

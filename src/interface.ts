@@ -1,10 +1,18 @@
-export interface IConfig {
+export interface IOptions {
   server: string;
   namespace: string;
-  group?: string;
-  dataId?: string;
   accessKey?: string;
   secretKey?: string;
-  subscribe?: boolean;
   logger?: typeof console;
+  config?: {
+    group: string;
+    dataId: string;
+    subscribe?: boolean;
+    commons?: IConfig[];
+  };
+}
+
+export interface IConfig {
+  group: string;
+  dataId: string;
 }

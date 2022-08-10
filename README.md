@@ -12,12 +12,14 @@ import { NamingService, NacosModule } from "nest-nacos";
   imports: [
     // 可注入获取nacos配置的服务
     NacosModule.forRoot({
-      group: process.env.group,
-      dataId: process.env.dataId,
       server: process.env.server,
       accessKey: process.env.accessKey,
       secretKey: process.env.secretKey,
-      namespace: process.env.namespace
+      namespace: process.env.namespace,
+      config:{
+        group: process.env.group,
+        dataId: process.env.dataId,
+      }
     })
   ]
 })
