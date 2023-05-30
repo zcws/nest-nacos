@@ -1,4 +1,11 @@
 # Changelog
+## [0.5.0](https://github.com/zcws/nest-nacos/compare/v0.4.1...v0.5.0) (2023-05-30)
+
+
+### Features
+
+* 支持debug配置，serverAddr完整rl。 ([63b5600](https://github.com/zcws/nest-nacos/commit/63b56002f4ca35d4b469b6cd41be09e9f78539d7))
+
 ### [0.4.1](https://github.com/zcws/nest-nacos/compare/v0.4.0...v0.4.1) (2022-08-10)
 
 ## [0.4.0](https://github.com/zcws/nest-nacos/compare/v0.3.0...v0.4.0) (2022-08-10)
