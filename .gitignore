@@ -8,3 +8,4 @@ lib
 types
 .env
 **/*.js
+pnpm-lock.yaml

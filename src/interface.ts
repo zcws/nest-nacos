@@ -1,4 +1,5 @@
 export interface IOptions {
+  debug?: boolean;
   server: string;
   namespace: string;
   accessKey?: string;
@@ -15,4 +16,13 @@ export interface IOptions {
 export interface IConfig {
   group: string;
   dataId: string;
+}
+
+
+export interface ClientOptions {
+  serverPort?: number;
+  serverAddr: string;
+  namespace: string;
+  accessKey?: string;
+  secretKey?: string;
 }

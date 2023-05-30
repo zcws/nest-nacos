@@ -2,7 +2,7 @@ import { NacosConfigClient, NacosNamingClient } from "nacos";
 import { Injectable, OnModuleDestroy, Logger } from "@nestjs/common";
 import { parse } from "yaml";
 import { EventEmitter } from "events";
-import { IOptions } from "./interface";
+import { ClientOptions, IOptions } from "./interface";
 import { networkInterfaces } from "os";
 import * as assert from "assert";
 
@@ -22,15 +22,29 @@ export class NacosService extends EventEmitter implements OnModuleDestroy {
     assert.ok(this.opt.accessKey, "accessKey must not be null!");
     assert.ok(this.opt.secretKey, "secretKey must not be null!");
 
+    if (!opt.debug && this.logger.localInstance.setLogLevels) {
+      this.logger.localInstance.setLogLevels(["error"]);
+    }
+
     this.setMaxListeners(0);
 
-    this.#configClient = new NacosConfigClient({
+    const options: ClientOptions = {
       serverAddr: this.opt.server,
       namespace: this.opt.namespace,
       accessKey: this.opt.accessKey,
       secretKey: this.opt.secretKey
-    });
+    };
 
+    if (/^http/.test(this.opt.server)) {
+      // http格式转化成hostname
+      const url = new URL(this.opt.server);
+      options.serverAddr = url.hostname;
+      if (url.port) {
+        options.serverPort = Number(url.port);
+      }
+    }
+
+    this.#configClient = new NacosConfigClient(options);
     if (this.opt.config) {
       // 加载配置文件
       this.loadAllConfig()

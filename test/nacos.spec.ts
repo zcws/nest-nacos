@@ -2,35 +2,40 @@ import { assert } from "chai";
 import { env } from "process";
 import { Test } from "@nestjs/testing";
 import { NacosModule, NacosService, IOptions } from "../src";
+import { ConsoleLogger } from "@nestjs/common";
 
 describe("NacosModule", () => {
   let svc: NacosService;
   before(async () => {
     const options: IOptions = {
-      server: env.server as string,
-      accessKey: env.accessKey,
-      secretKey: env.secretKey,
-      namespace: env.namespace as string,
+      debug: true,
+      server: env.NACOS_SERVER as string,
+      accessKey: env.NACOS_ACCESS_KEY as string,
+      secretKey: env.NACOS_SECRET_KEY as string,
+      namespace: env.NACOS_NAMESPACE as string,
       config: {
         subscribe: true,
-        group: env.group as string,
-        dataId: env.dataId as string,
+        group: env.NACOS_GROUP as string,
+        dataId: env.NACOS_DATA_ID as string,
         commons: [
           {
-            group: env["shared.group"] as string,
-            dataId: env["shared.dataId"] as string
+            group: env.NACOS_SHARED_GROUP as string,
+            dataId: env.NACOS_SHARED_DATA_ID as string
           }
         ]
       }
     };
     const module = await Test.createTestingModule({
       imports: [NacosModule.forRoot(options)]
-    }).compile();
+    })
+      .setLogger(new ConsoleLogger())
+      .compile();
     svc = module.get<NacosService>(NacosService);
   });
 
-  it("getConfig", async () => {
-    const data = await svc.getConfig();
+  it.only("getConfig", async () => {
+    const data = await svc.getConfig<{ key: string }>("key");
+    console.log(data);
     assert.ok(data);
   });
 
