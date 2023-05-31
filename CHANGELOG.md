@@ -1,4 +1,11 @@
 # Changelog
+### [0.5.2](https://github.com/zcws/nest-nacos/compare/v0.5.0...v0.5.2) (2023-05-31)
+
+
+### Bug Fixes
+
+* 修复注册server格式。 ([d55a07f](https://github.com/zcws/nest-nacos/commit/d55a07f3e1775c58c7082f9211d3533e8955f65a))
+
 ## [0.5.0](https://github.com/zcws/nest-nacos/compare/v0.4.1...v0.5.0) (2023-05-30)
 
 
