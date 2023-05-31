@@ -33,9 +33,8 @@ describe("NacosModule", () => {
     svc = module.get<NacosService>(NacosService);
   });
 
-  it.only("getConfig", async () => {
+  it("getConfig", async () => {
     const data = await svc.getConfig<{ key: string }>("key");
-    console.log(data);
     assert.ok(data);
   });
 

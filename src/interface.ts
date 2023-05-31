@@ -20,7 +20,6 @@ export interface IConfig {
 
 
 export interface ClientOptions {
-  serverPort?: number;
   serverAddr: string;
   namespace: string;
   accessKey?: string;

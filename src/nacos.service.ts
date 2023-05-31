@@ -38,10 +38,7 @@ export class NacosService extends EventEmitter implements OnModuleDestroy {
     if (/^http/.test(this.opt.server)) {
       // http格式转化成hostname
       const url = new URL(this.opt.server);
-      options.serverAddr = url.hostname;
-      if (url.port) {
-        options.serverPort = Number(url.port);
-      }
+      options.serverAddr = url.host;
     }
 
     this.#configClient = new NacosConfigClient(options);
@@ -119,11 +116,19 @@ export class NacosService extends EventEmitter implements OnModuleDestroy {
       return this.#namingClient;
     }
 
-    this.#namingClient = new NacosNamingClient({
+    const options = {
       serverList: this.opt.server,
       namespace: this.opt.namespace,
       logger: this.opt.logger || console
-    });
+    };
+
+    if (/^http/.test(options.serverList)) {
+      // http格式转化成hostname
+      const url = new URL(this.opt.server);
+      options.serverList = url.host;
+    }
+
+    this.#namingClient = new NacosNamingClient(options);
 
     await this.#namingClient.ready();
     this.logger.debug("ready");
