@@ -1,4 +1,6 @@
 # Changelog
+## [0.6.0](https://github.com/zcws/nest-nacos/compare/v0.5.2...v0.6.0) (2023-10-12)
+
 ### [0.5.2](https://github.com/zcws/nest-nacos/compare/v0.5.0...v0.5.2) (2023-05-31)
 
 
