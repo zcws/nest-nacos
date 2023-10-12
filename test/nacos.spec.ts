@@ -1,14 +1,12 @@
 import { assert } from "chai";
 import { env } from "process";
 import { Test } from "@nestjs/testing";
-import { NacosModule, NacosService, IOptions } from "../src";
-import { ConsoleLogger } from "@nestjs/common";
+import { NacosModule, NacosService, NacosOptions } from "../src";
 
 describe("NacosModule", () => {
   let svc: NacosService;
   before(async () => {
-    const options: IOptions = {
-      debug: true,
+    const options: NacosOptions = {
       server: env.NACOS_SERVER as string,
       accessKey: env.NACOS_ACCESS_KEY as string,
       secretKey: env.NACOS_SECRET_KEY as string,
@@ -28,7 +26,6 @@ describe("NacosModule", () => {
     const module = await Test.createTestingModule({
       imports: [NacosModule.forRoot(options)]
     })
-      .setLogger(new ConsoleLogger())
       .compile();
     svc = module.get<NacosService>(NacosService);
   });

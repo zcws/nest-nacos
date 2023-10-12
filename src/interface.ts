@@ -1,10 +1,13 @@
-export interface IOptions {
-  debug?: boolean;
+interface IConfig {
+  group: string;
+  dataId: string;
+}
+
+export interface NacosOptions {
   server: string;
   namespace: string;
   accessKey?: string;
   secretKey?: string;
-  logger?: typeof console;
   config?: {
     group: string;
     dataId: string;
@@ -12,12 +15,6 @@ export interface IOptions {
     commons?: IConfig[];
   };
 }
-
-export interface IConfig {
-  group: string;
-  dataId: string;
-}
-
 
 export interface ClientOptions {
   serverAddr: string;

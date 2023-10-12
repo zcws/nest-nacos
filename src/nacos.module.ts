@@ -1,20 +1,20 @@
 import { DynamicModule, Module } from "@nestjs/common";
 import { NacosService } from "./nacos.service";
-import { IOptions } from "./interface";
+import { NacosOptions } from "./interface";
+import { NACOS_OPTIONS } from "./constants";
 
 @Module({})
 export class NacosModule {
-  static forRoot(config: IOptions, global = true): DynamicModule {
+  static forRoot(options: NacosOptions, global = true): DynamicModule {
     return {
       global,
       module: NacosModule,
       providers: [
         {
-          provide: NacosService,
-          useFactory() {
-            return new NacosService(config);
-          }
-        }
+          provide: NACOS_OPTIONS,
+          useValue: options
+        },
+        NacosService
       ],
       exports: [NacosService]
     };

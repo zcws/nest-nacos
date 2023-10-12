@@ -1,30 +1,28 @@
 import { NacosConfigClient, NacosNamingClient } from "nacos";
-import { Injectable, OnModuleDestroy, Logger } from "@nestjs/common";
+import { Inject, Injectable, OnModuleDestroy } from "@nestjs/common";
 import { parse } from "yaml";
 import { EventEmitter } from "events";
-import { ClientOptions, IOptions } from "./interface";
+import { ClientOptions, NacosOptions } from "./interface";
 import { networkInterfaces } from "os";
 import * as assert from "assert";
+import Debug from "debug";
+import { NACOS_OPTIONS } from "./constants";
 
 @Injectable()
 export class NacosService extends EventEmitter implements OnModuleDestroy {
   #config;
   #namingClient;
   #isReady = false;
-  logger = new Logger("Nacos");
+  debug = Debug("nacos");
   #configClient: NacosConfigClient;
 
-  constructor(private readonly opt: IOptions) {
+  constructor(@Inject(NACOS_OPTIONS) private readonly opt: NacosOptions) {
     super();
 
     assert.ok(this.opt.server, "server must not be null!");
     assert.ok(this.opt.namespace, "namespace must not be null!");
     assert.ok(this.opt.accessKey, "accessKey must not be null!");
     assert.ok(this.opt.secretKey, "secretKey must not be null!");
-
-    if (!opt.debug && this.logger.localInstance.setLogLevels) {
-      this.logger.localInstance.setLogLevels(["error"]);
-    }
 
     this.setMaxListeners(0);
 
@@ -45,7 +43,7 @@ export class NacosService extends EventEmitter implements OnModuleDestroy {
     if (this.opt.config) {
       // 加载配置文件
       this.loadAllConfig()
-        .catch((err: Error) => this.logger.error(err.message, err.stack));
+        .catch((err: Error) => this.debug(err.message, err.stack));
     }
   }
 
@@ -93,7 +91,7 @@ export class NacosService extends EventEmitter implements OnModuleDestroy {
     }
 
     if (this.opt.config.subscribe) {
-      this.#configClient.subscribe({ dataId, group }, content => this.setConfig(content));
+      this.#configClient.subscribe({ dataId, group }, (content: string) => this.setConfig(content));
     }
 
     this.#isReady = true;
@@ -106,9 +104,9 @@ export class NacosService extends EventEmitter implements OnModuleDestroy {
     this.setConfig(content);
   }
 
-  private setConfig(content): void {
+  private setConfig(content: string): void {
     this.#config = Object.assign(this.#config || {}, parse(content));
-    this.logger.debug(`加载配置:${content}`);
+    this.debug(`加载配置:${content}`);
   }
 
   private async getNamingClient(): Promise<NacosNamingClient> {
@@ -119,7 +117,7 @@ export class NacosService extends EventEmitter implements OnModuleDestroy {
     const options = {
       serverList: this.opt.server,
       namespace: this.opt.namespace,
-      logger: this.opt.logger || console
+      logger: console
     };
 
     if (/^http/.test(options.serverList)) {
@@ -131,13 +129,13 @@ export class NacosService extends EventEmitter implements OnModuleDestroy {
     this.#namingClient = new NacosNamingClient(options);
 
     await this.#namingClient.ready();
-    this.logger.debug("ready");
+    this.debug("ready");
     return this.#namingClient;
   }
 
   async onModuleDestroy(): Promise<void> {
     await this.#namingClient?.close();
-    this.logger.debug("closed");
+    this.debug("closed");
   }
 
 
@@ -163,7 +161,7 @@ export class NacosService extends EventEmitter implements OnModuleDestroy {
       ip,
       port: await this.getConfig("port")
     });
-    this.logger.debug("register");
+    this.debug("register");
 
     return true;
   }
