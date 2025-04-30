@@ -1,6 +1,6 @@
 {
   "name": "nest-nacos",
-  "version": "0.7.0",
+  "version": "0.7.1",
   "keywords": [
     "nestjs",
     "nacos"
@@ -17,7 +17,7 @@
   "types": "types",
   "repository": {
     "type": "git",
-    "url": "https://github.com/zcws/nest-nacos.git"
+    "url": "git+https://github.com/zcws/nest-nacos.git"
   },
   "scripts": {
     "build": "rimraf lib types & tsc -b",
