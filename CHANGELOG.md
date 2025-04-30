@@ -1,4 +1,11 @@
 # Changelog
+## [0.7.0](https://github.com/zcws/nest-nacos/compare/v0.6.0...v0.7.0) (2025-04-30)
+
+
+### Features
+
+* 增加服务注册和环境变量支持 ([db8f455](https://github.com/zcws/nest-nacos/commit/db8f4557274d9cb7b80dd76836668dd1120fca8a))
+
 ## [0.6.0](https://github.com/zcws/nest-nacos/compare/v0.5.2...v0.6.0) (2023-10-12)
 
 ### [0.5.2](https://github.com/zcws/nest-nacos/compare/v0.5.0...v0.5.2) (2023-05-31)
