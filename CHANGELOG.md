@@ -1,4 +1,11 @@
 # Changelog
+## [1.0.0](https://github.com/zcws/nest-nacos/compare/v0.8.0...v1.0.0) (2025-04-30)
+
+
+### Features
+
+* 添加 enableEnvVars 配置项 ([bfd9b61](https://github.com/zcws/nest-nacos/commit/bfd9b61acd6b092ab24bfe06424a9337b93df120))
+
 ## [0.8.0](https://github.com/zcws/nest-nacos/compare/v0.7.0...v0.8.0) (2025-04-30)
 
 
