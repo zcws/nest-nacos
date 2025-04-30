@@ -41,6 +41,11 @@ export class NacosService extends EventEmitter implements OnModuleDestroy {
       secretKey: this.opt.secretKey
     };
 
+    if (!Object.hasOwn(this.opt, "enableEnvVars")) {
+      // 默认启用环境变量填充
+      this.opt.enableEnvVars = true;
+    }
+
     if (/^http/.test(this.opt.server)) {
       // http格式转化成hostname
       const url = new URL(this.opt.server);
