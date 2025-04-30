@@ -1,4 +1,11 @@
 # Changelog
+## [0.8.0](https://github.com/zcws/nest-nacos/compare/v0.7.0...v0.8.0) (2025-04-30)
+
+
+### Features
+
+* **Util:** 递归替换配置对象中的环境变量 ([1106ff2](https://github.com/zcws/nest-nacos/commit/1106ff2584eb4cdd21461312b1f3f1d9199610ff))
+
 ## [0.7.0](https://github.com/zcws/nest-nacos/compare/v0.6.0...v0.7.0) (2025-04-30)
 
 
