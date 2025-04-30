@@ -1,4 +1,4 @@
-import { NacosConfigClient, NacosNamingClient } from "nacos";
+import { NacosConfigClient, NacosNamingClient, Instance } from "nacos";
 import { Inject, Injectable, OnModuleDestroy } from "@nestjs/common";
 import { parse } from "yaml";
 import { EventEmitter } from "events";
@@ -7,14 +7,21 @@ import { networkInterfaces } from "os";
 import * as assert from "assert";
 import Debug from "debug";
 import { NACOS_OPTIONS } from "./constants";
+import { Util } from "./util";
+
+interface IService {
+  name: string;
+  instance?: Instance;
+}
 
 @Injectable()
 export class NacosService extends EventEmitter implements OnModuleDestroy {
-  #config;
-  #namingClient;
+  #config = {};
   #isReady = false;
+  #service: IService;
   debug = Debug("nacos");
   #configClient: NacosConfigClient;
+  #namingClient: NacosNamingClient | undefined;
 
   constructor(@Inject(NACOS_OPTIONS) private readonly opt: NacosOptions) {
     super();
@@ -25,6 +32,7 @@ export class NacosService extends EventEmitter implements OnModuleDestroy {
     assert.ok(this.opt.secretKey, "secretKey must not be null!");
 
     this.setMaxListeners(0);
+    this.#service = { name: "nest-service" };
 
     const options: ClientOptions = {
       serverAddr: this.opt.server,
@@ -72,7 +80,7 @@ export class NacosService extends EventEmitter implements OnModuleDestroy {
 
       throw new Error(`获取参数失败:${key}`);
     } else {
-      return this.#config;
+      return this.#config as T;
     }
   }
 
@@ -105,7 +113,14 @@ export class NacosService extends EventEmitter implements OnModuleDestroy {
   }
 
   private setConfig(content: string): void {
-    this.#config = Object.assign(this.#config || {}, parse(content));
+    let config = parse(content);
+    if (this.opt.enableEnvVars) {
+      // 启用环境变量填充
+      config = Util.replacePlaceholdersWithEnvVars(config);
+    }
+
+
+    this.#config = Object.assign(this.#config || {}, config);
     this.debug(`加载配置:${content}`);
   }
 
@@ -134,7 +149,10 @@ export class NacosService extends EventEmitter implements OnModuleDestroy {
   }
 
   async onModuleDestroy(): Promise<void> {
-    await this.#namingClient?.close();
+    if (this.#service.instance) {
+      await this.#namingClient?.deregisterInstance(this.#service.name, this.#service.instance);
+    }
+
     this.debug("closed");
   }
 
@@ -157,10 +175,18 @@ export class NacosService extends EventEmitter implements OnModuleDestroy {
     assert.ok(ip, "ip must not be null!");
 
     const client = await this.getNamingClient();
-    await client.registerInstance(name, {
+    const instance: Instance = {
       ip,
-      port: await this.getConfig("port")
-    });
+      enabled: true,
+      healthy: true,
+      instanceId: name,
+      port: await this.getConfig<number>("port")
+    };
+    await client.registerInstance(name, instance);
+
+    this.#service.name = name;
+    this.#service.instance = instance;
+
     this.debug("register");
 
     return true;

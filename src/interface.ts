@@ -8,6 +8,7 @@ export interface NacosOptions {
   namespace: string;
   accessKey?: string;
   secretKey?: string;
+  enableEnvVars?: boolean;
   config?: {
     group: string;
     dataId: string;
